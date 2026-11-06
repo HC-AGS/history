@@ -3,9 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>List</title>
-</link>
+<meta name="theme-color" content="#F5F2E9">
+<title>列表</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body><!-- 内容省略 -->
+<body>
+
+<div class="page">
+
+  <header class="topbar">
+    <a class="back" href="index.html" aria-label="返回首页">←</a>
+    <h1 class="topbar-title" id="pageTitle">载入中…</h1>
+  </header>
+
+  <main class="list-main">
+    <ul class="list" id="list"></ul>
+
+    <p class="state" id="loading">正在加载列表…</p>
+    <p class="state" id="empty" hidden>暂无内容</p>
+    <p class="state state-error" id="error" hidden></p>
+  </main>
+
+  <footer class="foot">
+    <span id="count" class="count"></span>
+  </footer>
+
+</div>
+
+<script src="js/data-mirror.js"></script>
+<script src="js/app.js"></script>
+<script>renderListPage();</script>
 </body>
 </html>
