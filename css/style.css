@@ -1,0 +1,468 @@
+/* ==========================================================================
+   校园档案 · 全站样式
+   设计约束：
+   - 系统字体（不引入任何外部字体/CDN）
+   - 页面背景 #F5F2E9（米黄纸质）
+   - 主色暗红 #8C4356，按钮文字白色 #FFF
+   - 介绍文字黑色 #1E1E1E
+   - 列表卡片：边框改为 5px 阴影，取消左侧竖线
+   - 详情正文使用楷体
+   - 适配 手机 / 平板 / 电脑
+   ========================================================================== */
+
+:root{
+  /* 颜色令牌 */
+  --bg:        #F5F2E9;              /* 页面背景：米黄纸质 */
+  --surface:   #FBF8F0;              /* 卡片底面：比背景略亮，托出阴影 */
+  --accent:    #8C4356;              /* 主色：暗红 */
+  --accent-dk: #6E3543;              /* 主色加深：hover / 按下 */
+  --accent-lt: #F3E3E7;              /* 主色浅调：标签、序号底色 */
+  --shadow:    rgba(140,67,86,.30);  /* 卡片 5px 阴影色 */
+  --ink:       #1E1E1E;
+  --ink-soft:  #555555;
+  --line:      #E0D9C8;
+  --white:     #FFFFFF;
+
+  /* 间距与圆角 */
+  --gap:       16px;
+  --radius:    12px;
+  --radius-lg: 16px;
+
+  /* 布局宽度 */
+  --maxw:      720px;
+
+  /* 字体 */
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+             "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-kai: "Kaiti SC", "STKaiti", "KaiTi", "KaiTi_GB2312", "楷体",
+              "Kai", "BiauKai", "DFKai-SB", "Noto Serif CJK SC", serif;
+
+  /* 安全区（刘海屏 / 手势条） */
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html, body{ margin: 0; padding: 0; }
+
+body{
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 触屏点击时去掉灰色高亮，但保留键盘焦点可见性 */
+a, button{ -webkit-tap-highlight-color: transparent; }
+
+a{ color: inherit; text-decoration: none; }
+
+/* ------------------------------ 页面容器 ------------------------------ */
+
+.page{
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* ------------------------------- 首页 ------------------------------- */
+
+.hero{
+  padding-top: calc(56px + var(--safe-t));
+  padding-bottom: 22px;
+  text-align: center;
+}
+
+.hero-title{
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+}
+
+/* 标题下的一条暗红短线，作为视觉锚点 */
+.hero-title::after{
+  content: "";
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin: 14px auto 0;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.hero-sub{
+  margin: 14px 0 0;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  color: var(--ink-soft);
+}
+
+.home-main{
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-bottom: 24px;
+}
+
+/* 介绍区：默认留空，写入文字后自动呈现 */
+.intro{
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.intro:empty{ display: none; }              /* 空的时候不占位、不显示 */
+
+.intro p{ margin: 0 0 1em; }
+.intro p:last-child{ margin-bottom: 0; }
+
+/* 按钮组：手机竖排，平板/电脑横排 */
+.btn-group{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--white);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-align: center;
+  transition: background-color .18s ease, transform .12s ease,
+              box-shadow .18s ease;
+  box-shadow: 0 3px 0 rgba(140,67,86,.22);
+}
+
+.btn:hover{ background: var(--accent-dk); }
+.btn:active{ transform: translateY(1px); box-shadow: none; }
+.btn:focus-visible{
+  outline: 3px solid var(--accent-lt);
+  outline-offset: 2px;
+}
+
+/* ------------------------------ 顶栏 ------------------------------ */
+
+.topbar{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: calc(18px + var(--safe-t));
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
+}
+
+.back{
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 22px;
+  line-height: 1;
+  transition: background-color .16s ease;
+}
+
+.back:hover{ background: var(--accent-lt); }
+.back:active{ background: var(--accent-lt); }
+
+.topbar-title{
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ------------------------------ 列表页 ------------------------------ */
+
+.list-main{
+  flex: 1 1 auto;
+  padding-top: 20px;
+  padding-bottom: 28px;
+}
+
+.list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  counter-reset: item;
+}
+
+/* 卡片：无边框，改用 5px 阴影成形；原来的左侧竖线已删除 */
+.item-link{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 16px;
+  border: 0;                              /* 取消 1px 细边框 */
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 5px 5px 0 var(--shadow);    /* 5px 阴影 */
+  transition: background-color .16s ease, box-shadow .16s ease,
+              transform .12s ease;
+}
+
+.item-link:hover{
+  background: #FFFDF8;
+  box-shadow: 5px 5px 0 rgba(140,67,86,.48);
+}
+.item-link:active{
+  transform: translate(2px, 2px);         /* 按下时向阴影方向沉一下 */
+  box-shadow: 3px 3px 0 var(--shadow);
+}
+.item-link:focus-visible{
+  outline: 3px solid var(--accent-lt);
+  outline-offset: 2px;
+}
+
+/* 序号方块 */
+.item-no{
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--accent-lt);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.item-body{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.item-title{
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-desc{
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-arrow{
+  flex: 0 0 auto;
+  color: #B9AFA0;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ------------------------------ 详情页 ------------------------------ */
+
+.detail-main{
+  flex: 1 1 auto;
+  padding-top: 18px;
+  padding-bottom: 40px;
+}
+
+.detail-meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.detail-meta:empty{ display: none; }
+
+.tag{
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-lt);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+/* 正文：楷体 */
+.detail-text,
+.kaiti{
+  font-family: var(--font-kai);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 2.05;
+  letter-spacing: 0.02em;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.detail-text p{ margin: 0 0 1.05em; text-indent: 2em; }
+.detail-text p:last-child{ margin-bottom: 0; }
+
+/* txt 中以「■ 标题」「【标题】」「标题：」等开头的行，做成小标题样式 */
+.detail-text .line-h{
+  text-indent: 0;
+  margin: 1.5em 0 0.6em;
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+/* 引用行：以 > 或 ｜ 开头（这里的竖线是引用标记，与列表卡片无关） */
+.detail-text .line-q{
+  text-indent: 0;
+  margin: 0 0 1em;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 17px;
+}
+
+/* ------------------------------ 状态提示 ------------------------------ */
+
+.state{
+  margin: 22px 0 0;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.state-error{
+  padding: 14px;
+  border: 1px solid #E7C6CF;
+  border-radius: var(--radius);
+  background: #FBF0F3;
+  color: #8C4356;
+  text-align: left;
+  line-height: 1.7;
+}
+
+.state-error code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: #F3E3E7;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ------------------------------- 页脚 ------------------------------- */
+
+.foot{
+  padding: 18px 0 calc(18px + var(--safe-b));
+  border-top: 1px solid var(--line);
+  text-align: center;
+  color: #9C9689;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.count{ color: var(--ink-soft); }
+
+/* --------------------------- 响应式断点 --------------------------- */
+
+/* 平板及更大：按钮两列或四列横排，容器放宽 */
+@media (min-width: 640px){
+  .page{ max-width: 780px; padding-left: 28px; padding-right: 28px; }
+
+  .hero{ padding-top: calc(72px + var(--safe-t)); }
+  .hero-title{ font-size: 36px; }
+
+  .btn-group{
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .btn{ min-height: 60px; font-size: 17px; letter-spacing: 0.1em; }
+
+  .detail-text, .kaiti{ font-size: 19px; }
+}
+
+/* 电脑：四按钮并排或 2x2 优雅布局 */
+@media (min-width: 1024px){
+  .page{ max-width: 860px; padding-left: 40px; padding-right: 40px; }
+
+  .hero{ padding-top: 96px; }
+  .hero-title{ font-size: 40px; }
+
+  .btn-group{
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .btn:hover{ box-shadow: 0 5px 12px rgba(140,67,86,.22); }
+
+  .intro{ font-size: 17px; }
+
+  /* 桌面端指针更精准，阴影略深一档 */
+  .item-link{ box-shadow: 6px 6px 0 var(--shadow); }
+  .item-link:hover{ box-shadow: 6px 6px 0 rgba(140,67,86,.48); }
+  .item-link:active{ box-shadow: 3px 3px 0 var(--shadow); }
+}
+
+/* 横屏小高度设备：收紧纵向留白 */
+@media (max-height: 480px) and (orientation: landscape){
+  .hero{ padding-top: calc(24px + var(--safe-t)); padding-bottom: 12px; }
+  .btn-group{ margin-top: 8px; }
+}
+
+/* 深色模式：维持米黄纸质底色与暗红主色，不反色 */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #F5F2E9;
+  }
+}
+
+/* 打印：去掉交互装饰 */
+@media print{
+  .topbar, .foot, .btn-group{ display: none; }
+  .page{ max-width: none; padding: 0; }
+  .item-link{ box-shadow: none; border: 1px solid var(--line); }
+}
