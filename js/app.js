@@ -8,9 +8,21 @@
   'use strict';
 
   /* ----------------------------- 常量与配置 ----------------------------- */
-
   var TYPES = ['诸生', '师长', '校宰', '杂文'];        // 允许的分类，防止路径注入
   var DATA_ROOT = 'data/';                     // 数据根目录（相对路径，配置项）
+
+  /* ---------------------------- 栏目开关 ------------------------------
+     暂时关闭的栏目：既不显示在首页按钮里（index.html 已注释），
+     也拒绝通过 list.html?type=xxx / detail.html?type=xxx 直接访问。
+     恢复时把该栏目名从这里删掉，再到 index.html 取消注释即可。
+     -------------------------------------------------------------------- */
+  var CLOSED_TYPES = ['诸生', '杂文'];
+
+  // 某分类当前是否开放
+  function isOpen(t) {
+    return TYPES.indexOf(t) !== -1 && CLOSED_TYPES.indexOf(t) === -1;
+  }
+
 
   /* ------------------------------- 工具函数 ------------------------------- */
 
@@ -170,6 +182,14 @@
       return;
     }
 
+    if (!isOpen(type)) {
+      elTitle.textContent = type;
+      elLoad.hidden = true;
+      elErr.hidden = false;
+      elErr.innerHTML = '「' + esc(type) + '」栏目暂时关闭。<br>请从首页进入其他栏目。';
+      return;
+    }
+
     document.title = type + ' ';
     elTitle.textContent = type;
 
@@ -239,6 +259,14 @@
       elErr.hidden = false;
       elErr.innerHTML = '缺少或非法的地址参数，应形如 ' +
         '<code>detail.html?type=诸生&amp;id=s01</code>。';
+      return;
+    }
+
+    if (!isOpen(type)) {
+      elTitle.textContent = type;
+      elLoad.hidden = true;
+      elErr.hidden = false;
+      elErr.innerHTML = '「' + esc(type) + '」栏目暂时关闭。<br>请从首页进入其他栏目。';
       return;
     }
 
